@@ -47,4 +47,51 @@ comments.post('/add', (req, res, next) => {
 })
 
 
+// Delete Comment
+comments.delete('/:id', (req, res, next) => {
+    Comment.destroy({
+        where: {
+            id: req.params.id
+        }
+    })
+        .then(() => {
+            res.send('Comment deleted!')
+        })
+        .catch(err => {
+            res.send('error: ' + err)
+        })
+})
+
+// GET Comments by PostId
+comments.get('/byPost/:postId', (req, res, next) => {
+    Comment.findAll({
+        where: {
+            post_id: req.params.postId
+        }
+    })
+        .then((result) => {
+            res.status(200).json(result)
+        })
+        .catch(err => {
+            res.send('error: ' + err)
+        })
+})
+// GET Comments by UserId
+comments.get('/byUser/:userId', (req, res, next) => {
+    Comment.findAll({
+        where: {
+            user_id: req.params.userId
+        }
+    })
+        .then((result) => {
+            res.status(200).json(result)
+        })
+        .catch(err => {
+            res.send('error: ' + err)
+        })
+})
+
+
+
+
 module.exports = comments

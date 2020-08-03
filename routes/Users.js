@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
 
 const User = require("../models/User")
+const Post = require("../models/Post");
 users.use(cors())
 
 process.env.SECRET_KEY = 'secret'
@@ -96,5 +97,37 @@ users.post('/login', (req, res) => {
             res.status(400).json({ error: err })
         })
 })
+
+users.delete('/:userId', async (req,res)=>{
+const id = req.params.userId
+
+let posts = await Post.findAll({
+    where :{
+        user_id: id
+    }
+})
+const ids = posts.map(elem=>elem.id)
+
+await Post.destroy({
+    where: {
+        id: ids
+    }
+});
+
+User.destroy({
+    where: {
+    id:id
+    }
+}).
+then(result=> {console.log(result)
+res.status(200).json({success: true , message:"User deleted"})
+}
+)
+.catch ( error => {
+     res.status(500).json({message:"error de suppression"}),
+console.log(error)} 
+)
+}); 
+
 
 module.exports = users
