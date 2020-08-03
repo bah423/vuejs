@@ -86,7 +86,7 @@ users.post('/login', (req, res) => {
                     let token = jwt.sign(user.dataValues, process.env.SECRET_KEY, {
                         expiresIn: 1440
                     })
-                    res.send(token)
+                    res.send({token:token,id:user.id})
                 }
             } else {
                 res.status(400).json({ error: 'User does not exist' })
