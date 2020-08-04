@@ -1,21 +1,56 @@
-import Vue from 'vue'
-import Router from 'vue-router'
 import Home from '../components/Home'
 import Login from '../components/Login'
 import Profil from '../components/Profil'
 import Register from '../components/Register'
-import Post from '../components/Post'
+import Posts from '../components/Posts'
 import AddPost from '../components/AddPost'
 import DetailsPost from '../components/DetailsPost'
+import VueRouter from "vue-router";
+import Vue from "vue";
+import Post from "../components/Post"
 
-Vue.use(Router)
-
-export default new Router({
-    routes: [
+Vue.use(VueRouter)
+const routes = [
+    {
+        path: "*",
+        redirect : {name : "Home"}
+    },
         {
-         path: '/',
+         path: '/home',
          name: 'Home',
-         component: Home 
+         component: Home,
+         
+         children: [
+
+            {
+                path: '/profil',
+                name: 'Profil',
+                component: Profil 
+               },
+               {
+                path: '/posts',
+                name: 'Posts',
+                component: Posts 
+               },
+               {
+                path: '/post/add',
+                name: 'AddPost',
+                component: AddPost 
+               },
+               {
+                path: '/post/detail/:slug',
+                name: 'DetailsPost',
+                component: DetailsPost
+               },
+               {
+                   path: '/post/:id',
+                   name:    'postDetails',
+                   component: Post
+               }
+    
+
+            
+         ]
         },
         {
             path: '/login',
@@ -26,29 +61,15 @@ export default new Router({
             path: '/register',
             name: 'Register',
             component: Register 
-           },
-           {
-            path: '/profil',
-            name: 'Profil',
-            component: Profil 
-           },
-           {
-            path: '/post',
-            name: 'Post',
-            component: Post 
-           },
-           {
-            path: '/post/add',
-            name: 'AddPost',
-            component: AddPost 
-           },
-           {
-            path: '/post/detail/:slug',
-            name: 'DetailsPost',
-            component: DetailsPost
            }
-
     ]
 
-}) 
+
+    const router = new VueRouter({ // register routes into our router
+        routes: routes,
+        mode: 'history'
+    });
+
+    export default router
+
 

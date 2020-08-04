@@ -1,45 +1,53 @@
 <template>
 <div class="container">
-  <ul>
-        <li >
+  
+  
+    <ul>
+        <li v-for="post in posts" :key="post.id" @click="showPostDelails(post.id)">
         <img style="height:30%; width:30%" :src="'http://localhost:3000/images/'+ post.path">
         <b>Label:</b>  {{post.label}} <br>
         <b>description : </b> {{post.description}}
+        <b> publie par : </b> {{post.user.name}}
         </li>
     </ul>
 
 </div>
 </template>
-
 <script>
 import axios from "axios"
 
 export default {
-    name : "post",
-
+    name: "posts",
     data()  {
     return {
-        post: {}
-     }
+        posts:[]
+    }
+
+},
+    mounted(){
+
+        this.getAllPost();
     },
-    created(){
-      
-    },
+
+
 
     methods: {
 
-        getPostInfo(id){
+        getAllPost(){
     
-        axios.get("http://localhost:3000/posts/"+id).then(res => { 
+        axios.get("http://localhost:3000/posts/list").then(res => { 
             console.log(res)
 
-            this.post= res.data;
+            this.posts= res.data;
         }).catch(err => {
             console.log(err)
         })
          
+     } ,
+     showPostDelails(id){
+        this.$router.push({name: 'postDetails', params: {id: id}})
      }
-
 }
-};
+        
+    };
 </script>

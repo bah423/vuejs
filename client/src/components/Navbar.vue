@@ -8,23 +8,13 @@
       
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
-
-           <li v-if="auth ==''">
-               <router-link class="nav-link" to="/register">Inscription</router-link>
-           </li>
-            <li v-if="auth ==''">
-               <router-link class="nav-link" to="/login">Login</router-link>
-           </li>
-                       <li v-if="auth =='loggedin'">
-               <router-link class="nav-link" to="/home">Mon Mur</router-link>
-           </li>
-            <li v-if="auth =='loggedin'">
+            <li v-if="token  != null ">
                <router-link class="nav-link" to="/posts">Publication</router-link>
            </li>
-            <li v-if="auth =='loggedin'">
+       <li v-if="token  != null ">
                <router-link class="nav-link" to="/post/add">Ajouter une publication</router-link>
            </li>
-            <li  v-if="auth =='loggedin'">
+              <li v-if="token  != null ">
                <router-link class="nav-link" to="/profil">Mon profil</router-link>
            </li>
 
@@ -40,10 +30,11 @@ EventBus.$on('logged-in', test => {
   console.log(test)
 })
 export default {
+  name : "navbar",
   data(){
     return {
       auth: '',
-      token: sessionStorage.usertoken,
+      token: localStorage.usertoken,
     }
   },
   methods: {
